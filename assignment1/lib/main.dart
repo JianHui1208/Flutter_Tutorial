@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -39,22 +40,28 @@ class _MagicBallPageState extends State<IndexPage> {
       appBar: AppBar(
         title: Center(child: Text(widget.title)),
       ),
-      body: Center(
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        number = Random().nextInt(5) + 1;
-                      });
-                    },
-                    child: Image.asset('assets/images/ball$number.png')),
-              ),
-            )
-          ],
+      body: Container(
+        margin: const EdgeInsets.all(0.0),
+        child: Center(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          number = Random().nextInt(5) + 1;
+                          if (kDebugMode) {
+                            print(number);
+                          }
+                        });
+                      },
+                      child: Image.asset('assets/images/ball$number.png')),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
