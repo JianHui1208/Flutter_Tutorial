@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:assignment/story_brain.dart';
-
-StoryController story = StoryController();
+import 'package:flutter/material.dart';
 
 void main() => runApp(const AdventureGame());
 
@@ -17,6 +15,8 @@ class AdventureGame extends StatelessWidget {
   }
 }
 
+StoryBrain storyBrain = StoryBrain();
+
 class StoryPage extends StatefulWidget {
   const StoryPage({Key? key}) : super(key: key);
 
@@ -25,371 +25,92 @@ class StoryPage extends StatefulWidget {
 }
 
 class _StoryPageState extends State<StoryPage> {
-  int _currentStoryIndex = 0;
-
-  void _goToStory(int index) {
-    setState(() {
-      _currentStoryIndex = index;
-    });
-  }
-
-  void _restartStory() {
-    setState(() {
-      _currentStoryIndex = 0;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 15.0),
         constraints: const BoxConstraints.expand(),
-        child: Scaffold(body: _buildStory()),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.cover,
+            opacity: 0.5,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 12,
+                child: Center(
+                  child: Text(
+                    storyBrain.getStory(),
+                    style: const TextStyle(
+                      fontSize: 25.0,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      storyBrain.nextStory(1);
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) => Colors.red),
+                    foregroundColor: MaterialStateProperty.resolveWith(
+                        (states) => Colors.white),
+                    shape: MaterialStateProperty.resolveWith(
+                        (states) => const BeveledRectangleBorder()),
+                  ),
+                  child: Text(
+                    storyBrain.getChoice1(),
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Expanded(
+                flex: (storyBrain.buttonShouldBeVisible() == false) ? 0 : 2,
+                child: Visibility(
+                  visible: storyBrain.buttonShouldBeVisible(),
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        storyBrain.nextStory(2);
+                      });
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.blue),
+                      foregroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.white),
+                      shape: MaterialStateProperty.resolveWith(
+                          (states) => const BeveledRectangleBorder()),
+                    ),
+                    child: Text(
+                      storyBrain.getChoice2(),
+                      style: const TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
-  }
-
-  Widget _buildStory() {
-    switch (_currentStoryIndex) {
-      case 0:
-        return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 12,
-                child: Center(
-                  child: Text(
-                    story.getStoryTitle(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: TextButton(
-                  onPressed: () {
-                    _goToStory(2);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.red),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.white),
-                    shape: MaterialStateProperty.resolveWith(
-                        (states) => const BeveledRectangleBorder()),
-                  ),
-                  child: Text(
-                    story.getChoice1(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Expanded(
-                flex: 2,
-                child: Visibility(
-                  child: TextButton(
-                    onPressed: () {
-                      _goToStory(1);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Colors.blue),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Colors.white),
-                      shape: MaterialStateProperty.resolveWith(
-                          (states) => const BeveledRectangleBorder()),
-                    ),
-                    child: Text(
-                      story.getChoice2(_currentStoryIndex),
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      case 1:
-        return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 12,
-                child: Center(
-                  child: Text(
-                    story.getStoryTitle(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: TextButton(
-                  onPressed: () {
-                    _goToStory(2);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.red),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.white),
-                    shape: MaterialStateProperty.resolveWith(
-                        (states) => const BeveledRectangleBorder()),
-                  ),
-                  child: Text(
-                    story.getChoice1(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Expanded(
-                flex: 2,
-                child: Visibility(
-                  child: TextButton(
-                    onPressed: () {
-                      _goToStory(3);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Colors.blue),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Colors.white),
-                      shape: MaterialStateProperty.resolveWith(
-                          (states) => const BeveledRectangleBorder()),
-                    ),
-                    child: Text(
-                      story.getChoice2(_currentStoryIndex),
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      case 2:
-        return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 12,
-                child: Center(
-                  child: Text(
-                    story.getStoryTitle(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: TextButton(
-                  onPressed: () {
-                    _goToStory(5);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.red),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.white),
-                    shape: MaterialStateProperty.resolveWith(
-                        (states) => const BeveledRectangleBorder()),
-                  ),
-                  child: Text(
-                    story.getChoice1(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Expanded(
-                flex: 2,
-                child: Visibility(
-                  child: TextButton(
-                    onPressed: () {
-                      _goToStory(4);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Colors.blue),
-                      foregroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Colors.white),
-                      shape: MaterialStateProperty.resolveWith(
-                          (states) => const BeveledRectangleBorder()),
-                    ),
-                    child: Text(
-                      story.getChoice2(_currentStoryIndex),
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      case 3:
-        return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 12,
-                child: Center(
-                  child: Text(
-                    story.getStoryTitle(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: TextButton(
-                  onPressed: () {
-                    _restartStory();
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.red),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.white),
-                    shape: MaterialStateProperty.resolveWith(
-                        (states) => const BeveledRectangleBorder()),
-                  ),
-                  child: Text(
-                    story.getChoice1(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-            ],
-          ),
-        );
-      case 4:
-        return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 12,
-                child: Center(
-                  child: Text(
-                    story.getStoryTitle(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: TextButton(
-                  onPressed: () {
-                    _restartStory();
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.red),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.white),
-                    shape: MaterialStateProperty.resolveWith(
-                        (states) => const BeveledRectangleBorder()),
-                  ),
-                  child: Text(
-                    story.getChoice1(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-            ],
-          ),
-        );
-      case 5:
-        return SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 12,
-                child: Center(
-                  child: Text(
-                    story.getStoryTitle(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: TextButton(
-                  onPressed: () {
-                    _restartStory();
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.red),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => Colors.white),
-                    shape: MaterialStateProperty.resolveWith(
-                        (states) => const BeveledRectangleBorder()),
-                  ),
-                  child: Text(
-                    story.getChoice1(_currentStoryIndex),
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-            ],
-          ),
-        );
-      default:
-        return Container();
-    }
   }
 }

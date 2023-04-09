@@ -1,6 +1,8 @@
 import 'package:assignment/story.dart';
 
-class StoryController {
+class StoryBrain {
+  int storyNumber = 0;
+
   final List<Story> _storyData = [
     Story(
         storyTitle:
@@ -33,15 +35,67 @@ class StoryController {
         choice2: '')
   ];
 
-  String getStoryTitle(indexNumber) {
-    return _storyData[indexNumber].storyTitle;
+  String getStory() {
+    return _storyData[storyNumber].storyTitle;
   }
 
-  String getChoice1(indexNumber) {
-    return _storyData[indexNumber].choice1;
+  String getChoice1() {
+    return _storyData[storyNumber].choice1;
   }
 
-  String getChoice2(indexNumber) {
-    return _storyData[indexNumber].choice2;
+  String getChoice2() {
+    return _storyData[storyNumber].choice2;
+  }
+
+  void nextStory(int choiseNumber) {
+    switch (storyNumber) {
+      case 0:
+        if (choiseNumber == 1) {
+          storyNumber = 2;
+        } else {
+          storyNumber = 1;
+        }
+        break;
+      case 1:
+        if (choiseNumber == 1) {
+          storyNumber = 2;
+        } else {
+          storyNumber = 3;
+        }
+        break;
+      case 2:
+        if (choiseNumber == 1) {
+          storyNumber = 5;
+        } else {
+          storyNumber = 4;
+        }
+        break;
+      case 3:
+        restart();
+        break;
+
+      case 4:
+        restart();
+        break;
+
+      case 5:
+        restart();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  void restart() {
+    storyNumber = 0;
+  }
+
+  bool buttonShouldBeVisible() {
+    if (storyNumber == 0 || storyNumber == 1 || storyNumber == 2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
